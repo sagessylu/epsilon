@@ -21,14 +21,13 @@ Function::NameNotCompliantError Function::BaseNameCompliant(const char * baseNam
 
   UTF8Decoder decoder(baseName);
   CodePoint c = decoder.nextCodePoint();
-  if (c.isDecimalDigit()) {
+  if (!(c.isLatinLetter())) {
     return NameNotCompliantError::NameCannotStartWithNumber;
   }
 
   while (c != UCodePointNull) {
-    // FIXME '_' should be accepted but not as first character
     // TODO Factor this piece of code with similar one in the Parser
-    if (!(c.isDecimalDigit() || c.isLatinLetter()) || c == '_') {
+    if (!(c.isDecimalDigit() || c.isLatinLetter() || c == '_')) {
       return NameNotCompliantError::CharacterNotAllowed;
     }
     c = decoder.nextCodePoint();
